@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
       
       {/* Main content */}
       <main className={`flex-1 ${!isMobile ? 'ml-64' : ''}`}>
-        <div className={`${isMobile ? 'container max-w-lg mx-auto px-4 py-2 pb-16' : 'p-6 w-full'}`}>
+        <div className={`${isMobile ? 'container max-w-lg mx-auto px-4 py-2 pb-16' : 'p-6 w-full max-w-none'}`}>
           {children}
         </div>
       </main>
