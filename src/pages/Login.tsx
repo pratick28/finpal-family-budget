@@ -1,61 +1,53 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/lib/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signIn, signUp } = useAuth();
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
-    if (!email || !password) {
+    try {
+      await signIn(email, password);
+      toast({
+        title: "Success",
+        description: "You have successfully logged in",
+      });
+      navigate('/');
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Invalid email or password",
       });
-      return;
     }
-    
-    // For demo purposes, we'll just navigate to the dashboard
-    // In a real app, you would integrate with Supabase auth here
-    toast({
-      title: "Success",
-      description: "You have successfully logged in",
-    });
-    
-    navigate('/');
   };
   
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
-    if (!email || !password) {
+    try {
+      await signUp(email, password);
+      toast({
+        title: "Success",
+        description: "Registration successful! Please check your email to verify your account.",
+      });
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Registration failed. Please try again.",
       });
-      return;
     }
-    
-    // For demo purposes, we'll just show a success toast
-    // In a real app, you would integrate with Supabase auth here
-    toast({
-      title: "Account created",
-      description: "You have successfully registered",
-    });
-    
-    navigate('/');
   };
   
   return (
