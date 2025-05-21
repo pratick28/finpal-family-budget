@@ -19,7 +19,7 @@ const Transactions = () => {
     <>
       <Header title="Transactions" />
       
-      <div className={`mb-4 ${!isMobile && 'grid grid-cols-1 gap-6'}`}>
+      <div className="mb-4 w-full">
         <Card className="overflow-hidden">
           <CardHeader className="pb-0">
             <CardTitle>Transaction History</CardTitle>
