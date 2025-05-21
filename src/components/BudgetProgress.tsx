@@ -27,7 +27,6 @@ const BudgetProgress = ({ current, max, label }: BudgetProgressProps) => {
       <Progress 
         value={percentage} 
         className={`h-2 ${isOverBudget ? "bg-gray-100" : "bg-gray-100"}`} 
-        indicatorClassName={isOverBudget ? "bg-finpal-expense" : "bg-finpal-purple"} 
       />
     </div>
   );

@@ -44,14 +44,13 @@ const Analytics = () => {
                     </div>
                     <Progress 
                       value={percentage} 
-                      className="h-2" 
-                      indicatorClassName={
+                      className={`h-2 ${
                         isOverBudget 
-                          ? "bg-finpal-expense" 
+                          ? "bg-secondary [&>div]:bg-finpal-expense" 
                           : percentage > 80 
-                          ? "bg-amber-500" 
-                          : "bg-finpal-purple"
-                      }
+                          ? "bg-secondary [&>div]:bg-amber-500" 
+                          : "bg-secondary [&>div]:bg-finpal-purple"
+                      }`}
                     />
                   </div>
                 );
