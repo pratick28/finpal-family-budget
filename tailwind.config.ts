@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for FinPal
+				finpal: {
+					purple: {
+						light: '#E5DEFF',
+						DEFAULT: '#9B87F5',
+						dark: '#7E69AB',
+					},
+					income: '#4CAF50',
+					expense: '#FF5252',
 				}
 			},
 			borderRadius: {
@@ -84,12 +95,24 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					from: {
+						opacity: '0'
+					},
+					to: {
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out'
+			},
+			backgroundImage: {
+				'gradient-card': 'linear-gradient(135deg, #9B87F5, #7E69AB)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
