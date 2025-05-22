@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { Transaction } from '../types';
 import TransactionItem from './TransactionItem';
 import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -11,6 +11,7 @@ interface TransactionListProps {
 
 const TransactionList = ({ transactions, title = "Transactions" }: TransactionListProps) => {
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
   
   const displayedTransactions = showAll ? transactions : transactions.slice(0, 5);
   

@@ -1,5 +1,4 @@
-
-import { Home, Wallet, PieChart, User, Plus } from 'lucide-react';
+import { Home, Wallet, PieChart, User, Plus, Folder } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BottomNavigation = () => {
@@ -13,10 +12,18 @@ const BottomNavigation = () => {
         <Wallet className="w-5 h-5" />
         <span className="text-xs mt-1">Transactions</span>
       </Link>
+      <Link to="/budget" className="flex flex-col items-center p-1 text-muted-foreground">
+        <Wallet className="w-5 h-5" />
+        <span className="text-xs mt-1">Budget</span>
+      </Link>
       <Link to="/add" className="relative -mt-6">
         <div className="flex items-center justify-center w-14 h-14 bg-finpal-purple rounded-full shadow-md">
           <Plus className="w-6 h-6 text-white" />
         </div>
+      </Link>
+      <Link to="/categories" className="flex flex-col items-center p-1 text-muted-foreground">
+        <Folder className="w-5 h-5" />
+        <span className="text-xs mt-1">Categories</span>
       </Link>
       <Link to="/analytics" className="flex flex-col items-center p-1 text-muted-foreground">
         <PieChart className="w-5 h-5" />

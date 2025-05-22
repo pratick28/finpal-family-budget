@@ -1,4 +1,3 @@
-
 import { Progress } from "@/components/ui/progress";
 
 interface BudgetProgressProps {
@@ -26,8 +25,7 @@ const BudgetProgress = ({ current, max, label }: BudgetProgressProps) => {
       </div>
       <Progress 
         value={percentage} 
-        className={`h-2 ${isOverBudget ? "bg-gray-100" : "bg-gray-100"}`} 
-        indicatorClassName={isOverBudget ? "bg-finpal-expense" : "bg-finpal-purple"} 
+        className={`h-2 ${isOverBudget ? "bg-finpal-expense" : "bg-finpal-purple"}`} 
       />
     </div>
   );

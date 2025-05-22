@@ -1,4 +1,3 @@
-
 import { formatCurrency } from '../utils/formatters';
 import { Transaction } from '../types';
 
