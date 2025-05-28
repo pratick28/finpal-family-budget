@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const BottomNavigation = () => {
   return (
     <div className="bottom-nav">
-      <Link to="/" className="flex flex-col items-center p-1 text-foreground">
+      <Link to="/dashboard" className="flex flex-col items-center p-1 text-foreground">
         <Home className="w-5 h-5" />
         <span className="text-xs mt-1">Home</span>
       </Link>
