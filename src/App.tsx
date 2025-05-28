@@ -13,6 +13,8 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import Categories from "./pages/Categories";
+import Budget from "./pages/Budget";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +49,9 @@ const App = () => (
             <Route path="/add" element={<PrivateRoute><AddTransaction /></PrivateRoute>} />
             <Route path="/analytics" element={<PrivateRoute><Layout><Analytics /></Layout></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><Layout><Profile /></Layout></PrivateRoute>} />
-            
+            <Route path="/categories" element={<PrivateRoute><Layout><Categories /></Layout></PrivateRoute>} />
+            <Route path="/budget" element={<PrivateRoute><Layout><Budget /></Layout></PrivateRoute>} />
+
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
