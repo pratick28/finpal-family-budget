@@ -17,7 +17,7 @@ const Login = () => {
   useEffect(() => {
     // If already logged in, redirect to dashboard
     if (user) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [user, navigate]);
   
@@ -42,7 +42,7 @@ const Login = () => {
         title: "Success",
         description: "You have successfully logged in",
       });
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       toast({
         variant: "destructive",

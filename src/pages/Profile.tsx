@@ -82,7 +82,7 @@ const Profile = () => {
           className="text-finpal-expense"
           onClick={async () => {
             await supabase.auth.signOut();
-            window.location.href = '/register';
+            window.location.href = '/';
           }}
         >
           Sign Out

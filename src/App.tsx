@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Categories from "./pages/Categories";
 import Budget from "./pages/Budget";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -40,18 +41,20 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             
             {/* Protected Routes */}
-            <Route path="/" element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
+            <Route path="/dashboard" element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
             <Route path="/transactions" element={<PrivateRoute><Layout><Transactions /></Layout></PrivateRoute>} />
             <Route path="/add" element={<PrivateRoute><AddTransaction /></PrivateRoute>} />
             <Route path="/analytics" element={<PrivateRoute><Layout><Analytics /></Layout></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><Layout><Profile /></Layout></PrivateRoute>} />
             <Route path="/categories" element={<PrivateRoute><Layout><Categories /></Layout></PrivateRoute>} />
             <Route path="/budget" element={<PrivateRoute><Layout><Budget /></Layout></PrivateRoute>} />
-
+            
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -61,4 +64,4 @@ const App = () => (
   </QueryClientProvider>
 );
 
-export default App
+export default App;
