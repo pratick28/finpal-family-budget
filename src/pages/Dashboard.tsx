@@ -72,13 +72,13 @@ const Dashboard = () => {
   const balance = transactions.reduce((acc, t) => t.type === 'income' ? acc + Number(t.amount) : t.type === 'expense' ? acc - Number(t.amount) : acc, 0);
   const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + Number(t.amount), 0);
   const expenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + Number(t.amount), 0);
-
+  
   // Calculate overall budget progress
   const totalBudget = budgetCategories.reduce((acc, budget) => acc + Number(budget.limit), 0);
   const totalSpent = budgetCategories.reduce((acc, budget) => acc + Number(budget.spent), 0);
 
   if (loading) return <div>Loading...</div>;
-
+  
   return (
     <>
       <Header />

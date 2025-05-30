@@ -37,27 +37,18 @@ const Budget = () => {
       setLoading(true);
       setError(null);
       try {
-        // Get user's profile to get family_id
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('family_id')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) throw profileError;
-
         // Fetch categories
         const { data: catData, error: catError } = await supabase
           .from('categories')
           .select('*')
-          .eq('family_id', profile.family_id)
+          .eq('created_by_user_id', user.id)
           .order('name');
 
         // Fetch budgets for the selected month
         const { data: budgetData, error: budgetError } = await supabase
           .from('budget_categories')
           .select('*')
-          .eq('family_id', profile.family_id)
+          .eq('created_by_user_id', user.id)
           .eq('month', month + '-01');
 
         if (catError || budgetError) throw catError || budgetError;
@@ -96,15 +87,6 @@ const Budget = () => {
     setSaving(true);
     setError(null);
     try {
-      // Get user's profile to get family_id
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('family_id')
-        .eq('id', user.id)
-        .single();
-
-      if (profileError) throw profileError;
-
       for (const cat of categories) {
         const limit = budgets.find(b => b.category_id === cat.id)?.limit_amount;
         if (limit && !isNaN(Number(limit))) {
@@ -112,11 +94,11 @@ const Budget = () => {
           const { error } = await supabase
             .from('budget_categories')
             .upsert({
-              family_id: profile.family_id,
               category_id: cat.id,
               month: month + '-01',
               limit_amount: Number(limit),
-            }, { onConflict: 'family_id,category_id,month' });
+              created_by_user_id: user.id
+            }, { onConflict: 'category_id,month' });
           if (error) throw error;
         }
       }

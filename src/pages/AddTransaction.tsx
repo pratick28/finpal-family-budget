@@ -20,6 +20,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { supabase } from '../integrations/supabase/client';
+import { useAuth } from '@/lib/auth';
 
 interface FormData {
   title: string;
@@ -30,78 +31,66 @@ interface FormData {
 }
 
 const AddTransaction = () => {
+  const { user } = useAuth();
   const [type, setType] = useState<'expense' | 'income'>('expense');
   const [categories, setCategories] = useState<any[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const [accountId, setAccountId] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<FormData>();
-
-  useEffect(() => {
-    const fetchUserAndAccount = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setError('You must be logged in to add a transaction.');
-        return;
-      }
-      setUserId(user.id);
-      const { data: memberships } = await (supabase as any)
-        .from('account_members')
-        .select('account_id')
-        .eq('user_id', user.id)
-        .limit(1);
-      if (memberships && memberships.length > 0) {
-        setAccountId(memberships[0].account_id);
-      } else {
-        setError('No account found for this user.');
-      }
-    };
-    fetchUserAndAccount();
-  }, []);
-
+  
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!accountId) return;
+      if (!user) return;
       setCategoriesLoading(true);
-      const { data, error } = await (supabase as any)
-        .from('categories')
-        .select('*')
-        .eq('account_id', accountId)
-        .order('name');
-      if (!error) setCategories(data);
-      setCategoriesLoading(false);
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('*')
+          .eq('created_by_user_id', user.id)
+          .order('name');
+        
+        if (error) throw error;
+        setCategories(data || []);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setError('Failed to load categories');
+      } finally {
+        setCategoriesLoading(false);
+      }
     };
-    if (accountId) fetchCategories();
-  }, [accountId]);
+
+    fetchCategories();
+  }, [user]);
 
   const onSubmit = async (data: FormData) => {
-    setError(null);
-    if (!userId || !accountId) {
-      setError('User or account not loaded.');
+    if (!user) {
+      setError('You must be logged in to add a transaction.');
       return;
     }
     if (!data.category) {
       setError('Please select a category');
       return;
     }
-    const { error } = await (supabase as any)
-      .from('transactions')
-      .insert({
-        account_id: accountId,
-        user_id: userId,
-        category_id: data.category,
-        title: data.title,
-        amount: data.amount,
-        date: data.date,
-        type,
-        description: data.description,
-      });
-    if (error) {
-      setError(error.message);
-    } else {
+
+    try {
+      const { error } = await supabase
+        .from('transactions')
+        .insert({
+          user_id: user.id,
+          category_id: data.category,
+          title: data.title,
+          amount: data.amount,
+          date: data.date,
+          type,
+          description: data.description,
+        });
+
+      if (error) throw error;
       navigate('/');
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+      setError(error instanceof Error ? error.message : 'Failed to create transaction');
     }
   };
 

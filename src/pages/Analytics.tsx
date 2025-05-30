@@ -3,7 +3,6 @@ import Header from '../components/Header';
 import { useAuth } from '@/lib/auth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const Analytics = () => {
@@ -19,20 +18,11 @@ const Analytics = () => {
       
       setLoading(true);
       try {
-        // Get user's profile to get family_id
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('family_id')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) throw profileError;
-
-        // Get all transactions for the family
+        // Get all transactions for the current user
         const { data: transactions, error: transactionsError } = await supabase
           .from('transactions')
-          .select('*, profile:user_id(*)')
-          .eq('profile.family_id', profile.family_id)
+          .select('*')
+          .eq('user_id', user.id)
           .gte('date', `${month}-01`)
           .lte('date', `${month}-31`);
 

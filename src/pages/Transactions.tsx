@@ -21,30 +21,14 @@ const Transactions = () => {
       
       setLoading(true);
       try {
-        // First get the user's profile to get family_id
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('family_id')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) throw profileError;
-
-        // Then get all transactions for the family
+        // Get all transactions for the current user
         const { data, error } = await supabaseAny
           .from('transactions')
           .select(`
             *,
-            category:category_id(*),
-            profile:user_id(
-              id,
-              first_name,
-              last_name,
-              email,
-              family_id
-            )
+            category:category_id(*)
           `)
-          .eq('profile.family_id', profile.family_id)
+          .eq('user_id', user.id)
           .order('date', { ascending: false });
 
         if (error) throw error;
@@ -56,12 +40,6 @@ const Transactions = () => {
           date: t.date,
           type: t.type,
           description: t.description,
-          profile: t.profile ? {
-            id: t.profile.id,
-            first_name: t.profile.first_name,
-            last_name: t.profile.last_name,
-            email: t.profile.email
-          } : null,
           category: t.category ? {
             id: t.category.id,
             name: t.category.name,
