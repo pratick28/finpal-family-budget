@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 interface TransactionListProps {
   transactions: Transaction[];
   title?: string;
+  onDelete?: (id: string) => void;
 }
 
-const TransactionList = ({ transactions, title = "Transactions" }: TransactionListProps) => {
+const TransactionList = ({ transactions, title = "Transactions", onDelete }: TransactionListProps) => {
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
   
@@ -33,7 +34,11 @@ const TransactionList = ({ transactions, title = "Transactions" }: TransactionLi
       <div className="divide-y divide-gray-100">
         {displayedTransactions.length > 0 ? (
           displayedTransactions.map(transaction => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
+            <TransactionItem 
+              key={transaction.id} 
+              transaction={transaction} 
+              onDelete={onDelete}
+            />
           ))
         ) : (
           <p className="p-4 text-center text-muted-foreground">No transactions found</p>
